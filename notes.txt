@@ -1,0 +1,6 @@
+https://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really
+https://dave.cheney.net/2014/12/01/five-suggestions-for-setting-up-a-go-project
+
+http://blog.charmes.net/2015/07/reverse-proxy-in-go.html
+http://www.darul.io/post/2015-07-22_go-lang-simple-reverse-proxy
+

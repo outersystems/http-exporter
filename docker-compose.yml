@@ -1,0 +1,19 @@
+version: '2.1'
+
+services:
+    http-exporter-blog:
+        image: outersystems/http-exporter:${VERSION:-latest}
+        command: -target="http://blog.docker:1313"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        labels:
+            - com.docker.compose.project=plic
+            - traefik.frontend.rule=Host:blog.outer.systems
+            - traefik.backend=http-exporter-blog
+            - traefik.port=8080
+        networks:
+            default:
+                aliases:
+                    - http-exporter-blog.docker
+
+

@@ -1,0 +1,7 @@
+version: '2.1'
+
+services:
+    demo-ws:
+        image: demo-ws
+    http-exporter-blog:
+        command: -target="http://demo-ws:8080"
