@@ -40,7 +40,7 @@ build() {
 		docker rmi ${image}:latest ${image}:n &>/dev/null || true
 	fi
 
-	out=$(docker build -t ${image}:n ${context} 2>&1 || status=$?)
+	local out=$(docker build -t ${image}:n ${context} 2>&1 || status=$?)
 	if [ ${status} -ne 0 ]; then
 		echo -e ${out} >&2
 		exit $status
@@ -52,13 +52,33 @@ build() {
 	docker tag ${image}:n ${image}:latest
 }
 
+push() {
+	local githash=$(git rev-parse --verify HEAD)
+	if [ -z "${githash:-}" ]; then
+		echo "Git has can not be found!" >&2
+		exit 1
+	fi
+
+	local exist=0
+	docker inspect ${image}:${githash} &>/dev/null || exist=$?
+	if [ ${exist} -gt 0 ]; then
+		echo "Image ${image}:${githash} can not be found!" >&2
+		exit 1
+	fi
+
+	local id=$(docker inspect --format '{{ .Id }}' ${image}:${githash})
+	for i in $(docker inspect --format '{{range .RepoTags }}{{.}} {{end}}' ${image}:${githash}); do
+		docker push $i
+	done
+}
+
 all() {
 	local githash=
 	if [ $(cd ${context} && git diff-index  HEAD -- | wc -l) -eq 0 ]; then
 		githash="$(cd ${context} && git rev-parse --verify HEAD)"
 	fi
 
-	if [ -n "${githash}" ]; then
+	if [ -n "${githash:-}" ]; then
 		local already=0
 		docker inspect ${image}:${githash} &>/dev/null || already=$?
 		if [ $already -eq 0 ]; then
