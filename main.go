@@ -18,7 +18,7 @@ func main() {
 	// flags
 	port := flag.String("port", ":8080", "Listening port")
 	target := flag.String("target", "http://127.0.0.1:8081", "Target")
-	metrics := flag.String("metrics", ":9096", "Port on which the metrics will be available")
+	metrics := flag.String("metrics", ":9696", "Port on which the metrics will be available")
 
 	flag.Parse()
 
