@@ -33,7 +33,7 @@ func (p *Proxy) Handler() http.HandlerFunc {
 	var instLabels = []string{"method", "code"}
 	reqCnt := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "http_requests",
+			Name: "http_requests_total",
 			Help: "Number of http requests.",
 		},
 		instLabels,
@@ -42,7 +42,7 @@ func (p *Proxy) Handler() http.HandlerFunc {
 
 	reqDur := prometheus.NewSummary(
 		prometheus.SummaryOpts{
-			Name: "http_responsetime_microseconds",
+			Name: "http_responsetime_durations_microseconds",
 			Help: "Summary about the response time of the http requests counted in microseconds",
 		})
 	prometheus.Register(reqDur)
